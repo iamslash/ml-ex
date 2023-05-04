@@ -129,9 +129,9 @@ dmypy.json
 .pyre/
 
 
-data/
-logs/
-results.
+.data/
+.logs/
+.results/
 
 
 .DS_Store
