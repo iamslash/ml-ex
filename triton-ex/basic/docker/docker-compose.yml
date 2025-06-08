@@ -1,13 +1,13 @@
 services:
   triton:
-    image: nvcr.io/nvidia/tritonserver:24.03-py3
+    build: .
     container_name: triton_server
     ports:
       - "8000:8000"  # REST API
       - "8001:8001"  # gRPC API
       - "8002:8002"  # Prometheus metrics
     volumes:
-      - ./triton-models:/models
+      - ../triton-models:/models
     command: >
       tritonserver
       --model-repository=/models 

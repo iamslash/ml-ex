@@ -1,26 +1,21 @@
-name: "resnet18"
+name: "linear_regression"
 backend: "python"
-max_batch_size: 16
+max_batch_size: 8
 
 input [
   {
     name: "input__0"
     data_type: TYPE_FP32
-    dims: [3, 224, 224]
+    dims: [ 2 ]  # [x1, x2]
   }
 ]
 output [
   {
     name: "output__0"
     data_type: TYPE_FP32
-    dims: [1000]
+    dims: [ 1 ]  # [y]
   }
 ]
-
-dynamic_batching {
-  preferred_batch_size: [10]
-  max_queue_delay_microseconds: 5000
-}
 
 instance_group [
   {
@@ -28,3 +23,8 @@ instance_group [
     kind: KIND_CPU
   }
 ]
+
+dynamic_batching {
+  preferred_batch_size: [ 4 ]
+  max_queue_delay_microseconds: 100
+} 
