@@ -1,0 +1,21 @@
+services:
+  triton:
+    image: nvcr.io/nvidia/tritonserver:24.03-py3
+    container_name: triton_server
+    ports:
+      - "8000:8000"  # REST API
+      - "8001:8001"  # gRPC API
+      - "8002:8002"  # Prometheus metrics
+    volumes:
+      - ./triton-models:/models
+    command: >
+      tritonserver
+      --model-repository=/models 
+      --model-control-mode=poll 
+      --repository-poll-secs=30      
+      --log-verbose=2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v2/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
