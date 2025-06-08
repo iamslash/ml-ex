@@ -1,13 +1,15 @@
 # How To Run
 
-```
-$ docker compose up -d
+```bash
+cd docker
+
+docker-compose up
 ```
 
 ```bash
 # Request Single Inference
-$ python req-infer.py
+python req-infer.py
 
 # Request Multiple Inferences
-$ python req-infers.py
+python req-infers.py
 ```
