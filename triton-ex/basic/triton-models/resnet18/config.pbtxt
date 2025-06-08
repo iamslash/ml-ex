@@ -1,0 +1,30 @@
+name: "resnet18"
+platform: "pytorch_libtorch"
+max_batch_size: 16  # 최소 10 이상으로 설정
+
+input [
+  {
+    name: "input__0"
+    data_type: TYPE_FP32
+    dims: [3, 224, 224]
+  }
+]
+output [
+  {
+    name: "output__0"
+    data_type: TYPE_FP32
+    dims: [1000]
+  }
+]
+
+dynamic_batching {
+  preferred_batch_size: [10]
+  max_queue_delay_microseconds: 5000  # 5ms 기다리며 요청 수집
+}
+
+parameters [
+  {
+    key: "EXECUTION_ENV_PATH",
+    value: {string_value: "/opt/tritonserver/backends/python"}
+  }
+]
