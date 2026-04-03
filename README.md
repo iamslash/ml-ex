@@ -2,69 +2,96 @@
 
 ML 모델을 쉬운 것부터 어려운 것까지 직접 구현하고 실습하는 리포지토리.
 
+## 구조
+
+```
+ml-ex/
+├── scratch-ex/       원리 체득 (순수 Python/numpy)
+├── pytorch-ex/       핵심 모델 (PyTorch)
+├── recsys-ex/        추천 시스템
+├── search-ex/        검색/랭킹
+├── safety-ex/        AI 안전
+├── timeseries-ex/    시계열/이상탐지
+├── graph-ex/         그래프 신경망
+├── speech-ex/        음성
+├── multimodal-ex/    멀티모달
+└── triton-ex/        Triton
+```
+
 ## 학습 로드맵
 
 ### Phase 1: 기초 (From Scratch)
 
-| # | 모델 | 디렉토리 | 방식 |
-|---|------|----------|------|
-| 1 | Linear Regression | `scratch-ex/linear-regression` | numpy |
-| 2 | Logistic Regression | `scratch-ex/logistic-regression` | numpy |
-| 3 | Softmax Regression | `scratch-ex/softmax-regression` | numpy |
-| 4 | kNN | `scratch-ex/knn` | numpy |
-| 5 | Decision Tree | `scratch-ex/decision-tree` | numpy |
+| # | 모델 | 디렉토리 |
+|---|------|----------|
+| 1 | Linear Regression | `scratch-ex/linear-regression` |
+| 2 | Logistic Regression | `scratch-ex/logistic-regression` |
+| 3 | Softmax Regression | `scratch-ex/softmax-regression` |
+| 4 | kNN | `scratch-ex/knn` |
+| 5 | Decision Tree | `scratch-ex/decision-tree` |
 
 ### Phase 2: 신경망 기초 (From Scratch)
 
-| # | 모델 | 디렉토리 | 방식 |
-|---|------|----------|------|
-| 6 | MLP (Micrograd) | `scratch-ex/micrograd` | pure python |
-| 7 | CNN (최소 구현) | `scratch-ex/cnn-minimal` | numpy |
-| 8 | Self-Attention | `scratch-ex/self-attention` | numpy |
-| 9 | GPT (MicroGPT) | `scratch-ex/microgpt` | pure python |
+| # | 모델 | 디렉토리 |
+|---|------|----------|
+| 6 | MLP (Micrograd) | `scratch-ex/micrograd` |
+| 7 | CNN (최소 구현) | `scratch-ex/cnn-minimal` |
+| 8 | Self-Attention | `scratch-ex/self-attention` |
+| 9 | GPT (MicroGPT) | `scratch-ex/microgpt` |
 
-### Phase 3: PyTorch 실습
+### Phase 3: PyTorch 핵심
 
-| # | 모델 | 디렉토리 | 핵심 |
-|---|------|----------|------|
-| 10 | CNN | `pytorch-ex/cnn` | MNIST 분류, DataLoader |
-| 11 | RNN/LSTM | `pytorch-ex/rnn-lstm` | 시퀀스 모델링 |
-| 12 | Transformer | `pytorch-ex/transformer` | 인코더-디코더, 어텐션 |
-| 13 | BERT Fine-tuning | `pytorch-ex/bert-finetune` | 사전학습 모델 활용 |
-| 14 | ViT | `pytorch-ex/vit` | 이미지 패치 + 트랜스포머 |
-| 15 | wav2vec2 | `pytorch-ex/wav2vec2` | 음성 표현 학습 |
+| # | 모델 | 디렉토리 |
+|---|------|----------|
+| 10 | CNN (MNIST) | `pytorch-ex/cnn` |
+| 11 | RNN/LSTM | `pytorch-ex/rnn-lstm` |
+| 12 | Transformer | `pytorch-ex/transformer` |
+| 13 | BERT Fine-tuning | `pytorch-ex/bert-finetune` |
+| 14 | ViT | `pytorch-ex/vit` |
 
-### Phase 4: 생성 모델 (PyTorch)
+### Phase 4: 생성 모델
 
-| # | 모델 | 디렉토리 | 핵심 |
-|---|------|----------|------|
-| 16 | Autoencoder | `pytorch-ex/autoencoder` | 압축/복원, 잠재 공간 |
-| 17 | VAE | `pytorch-ex/vae` | 확률적 생성 |
-| 18 | Diffusion | `pytorch-ex/diffusion` | 노이즈 제거 생성 |
+| # | 모델 | 디렉토리 |
+|---|------|----------|
+| 15 | Autoencoder | `pytorch-ex/autoencoder` |
+| 16 | VAE | `pytorch-ex/vae` |
+| 17 | Diffusion | `pytorch-ex/diffusion` |
 
 ### Phase 5: 강화학습
 
-| # | 모델 | 디렉토리 | 핵심 |
-|---|------|----------|------|
-| 19 | Q-Learning | `scratch-ex/q-learning` | 테이블 기반 RL |
-| 20 | DQN | `pytorch-ex/dqn` | 신경망 기반 RL |
+| # | 모델 | 디렉토리 |
+|---|------|----------|
+| 18 | Q-Learning | `scratch-ex/q-learning` |
+| 19 | DQN | `pytorch-ex/dqn` |
 
 ### Phase 6: 응용
 
-| # | 모델 | 디렉토리 | 핵심 |
-|---|------|----------|------|
-| 21 | LoRA | `pytorch-ex/lora` | 파라미터 효율적 fine-tuning |
+| # | 모델 | 디렉토리 |
+|---|------|----------|
+| 20 | LoRA | `pytorch-ex/lora` |
+
+### Phase 7: 도메인별 실습
+
+| 도메인 | 디렉토리 | 내용 |
+|--------|----------|------|
+| 추천 | `recsys-ex/` | Matrix Factorization, Two-Tower, NCF |
+| 검색 | `search-ex/` | BM25, Semantic Search, Re-ranker |
+| 안전 | `safety-ex/` | Toxicity Classifier, Reward Model, DPO |
+| 시계열 | `timeseries-ex/` | Anomaly Autoencoder, Forecasting |
+| 그래프 | `graph-ex/` | GCN, GAT |
+| 음성 | `speech-ex/` | wav2vec2 |
+| 멀티모달 | `multimodal-ex/` | CLIP, Image Captioning |
 
 ## 설치
 
 ```bash
-# 기본 (scratch-ex 전체, pytorch-ex 일부)
+# 기본 (scratch-ex, pytorch-ex 대부분)
 pip install numpy torch torchvision scikit-learn matplotlib
 
-# BERT, ViT, wav2vec2
+# BERT, ViT
 pip install transformers
 
-# wav2vec2 추가
+# wav2vec2
 pip install torchaudio
 ```
 
