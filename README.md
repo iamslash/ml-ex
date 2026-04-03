@@ -76,13 +76,13 @@ ml-ex/
 | 도메인 | 디렉토리 | 내용 |
 |--------|----------|------|
 | 추천 | `recsys-ex/` | MF, Two-Tower, NCF, DCN, PLE-MTL, Item2Vec, FT-Transformer, Offline RL |
-| 검색 | `search-ex/` | BM25, Semantic Search |
+| 검색 | `search-ex/` | BM25, Semantic Search, Re-ranker |
 | 인과추론 | `causal-ex/` | HydraNet, Meta-Learners (S/T/X-Learner) |
 | 안전 | `safety-ex/` | Toxicity Classifier, Reward Model, DPO |
 | 시계열 | `timeseries-ex/` | Anomaly Autoencoder, Forecasting, LSTM-FCN |
-| 그래프 | `graph-ex/` | GCN |
-| 음성 | `speech-ex/` | wav2vec2 |
-| 멀티모달 | `multimodal-ex/` | CLIP |
+| 그래프 | `graph-ex/` | GCN, GAT |
+| 음성 | `speech-ex/` | wav2vec2 (참고 예제, GPU 필요) |
+| 멀티모달 | `multimodal-ex/` | CLIP, Image Captioning |
 
 ## 설치
 

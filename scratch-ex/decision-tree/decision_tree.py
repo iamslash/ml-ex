@@ -13,30 +13,35 @@ np.random.seed(42)
 n_per_class = 50
 n_classes = 3
 
+# X0, X1, X2: (n_per_class, 4) — 클래스별 특성 행렬
 X0 = np.random.randn(n_per_class, 4) * 0.5 + np.array([1, 1, 0, 0])
 X1 = np.random.randn(n_per_class, 4) * 0.5 + np.array([0, 0, 2, 2])
 X2 = np.random.randn(n_per_class, 4) * 0.5 + np.array([2, 0, 1, 3])
 
+# X: (n_per_class * n_classes, 4), y: (n_per_class * n_classes,)
 X = np.vstack([X0, X1, X2])
 y = np.array([0]*n_per_class + [1]*n_per_class + [2]*n_per_class)
 
 indices = np.random.permutation(len(X))
-X, y = X[indices], y[indices]
+X, y = X[indices], y[indices]  # 모양 동일
 
-# train/test split
+# train/test split — X_train: (split, 4), X_test: (N-split, 4), y_*: (split,) / (N-split,)
 split = 120
 X_train, X_test = X[:split], X[split:]
 y_train, y_test = y[:split], y[split:]
 
+# 예상 출력: train: 120, test: 30, features: 4, classes: 3
 print(f"train: {len(X_train)}, test: {len(X_test)}, features: {X.shape[1]}, classes: {n_classes}")
 
 # --- 엔트로피 ---
+# y: (n_samples,) — 정수 클래스 라벨
 def entropy(y):
     counts = np.bincount(y)
     probs = counts[counts > 0] / len(y)
     return -np.sum(probs * np.log2(probs))
 
 # --- 정보 이득 ---
+# y, left_mask: (n_samples,) — left_mask는 bool
 def information_gain(y, left_mask):
     if left_mask.sum() == 0 or (~left_mask).sum() == 0:
         return 0
@@ -48,6 +53,7 @@ def information_gain(y, left_mask):
     return parent_entropy - child_entropy
 
 # --- 최적 분할 찾기 ---
+# X: (n_samples, n_features), y: (n_samples,)
 def find_best_split(X, y):
     best_gain = 0
     best_feature = None
@@ -75,6 +81,7 @@ class Node:
         self.value = value            # 리프 노드의 예측 클래스
 
 # --- 트리 구축 ---
+# X: (n_samples, n_features), y: (n_samples,)
 def build_tree(X, y, depth=0, max_depth=5):
     # 종료 조건: 순수 노드 또는 최대 깊이
     if len(np.unique(y)) == 1:
@@ -94,6 +101,7 @@ def build_tree(X, y, depth=0, max_depth=5):
     return Node(feature=feature, threshold=threshold, left=left, right=right)
 
 # --- 예측 ---
+# x: (n_features,) — 단일 샘플 특성 벡터
 def predict_one(node, x):
     if node.value is not None:
         return node.value
@@ -102,6 +110,7 @@ def predict_one(node, x):
     else:
         return predict_one(node.right, x)
 
+# X: (n_samples, n_features) → 반환 (n_samples,)
 def predict(node, X):
     return np.array([predict_one(node, x) for x in X])
 
@@ -124,6 +133,7 @@ print("\n--- tree structure ---")
 print_tree(tree)
 
 # --- 평가 ---
+# train_preds: (len(X_train),), test_preds: (len(X_test),)
 train_preds = predict(tree, X_train)
 test_preds = predict(tree, X_test)
 
