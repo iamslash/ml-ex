@@ -10,6 +10,7 @@ ml-ex/
 ├── pytorch-ex/       핵심 모델 (PyTorch)
 ├── recsys-ex/        추천 시스템
 ├── search-ex/        검색/랭킹
+├── causal-ex/        인과추론
 ├── safety-ex/        AI 안전
 ├── timeseries-ex/    시계열/이상탐지
 ├── graph-ex/         그래프 신경망
@@ -74,13 +75,14 @@ ml-ex/
 
 | 도메인 | 디렉토리 | 내용 |
 |--------|----------|------|
-| 추천 | `recsys-ex/` | Matrix Factorization, Two-Tower, NCF |
-| 검색 | `search-ex/` | BM25, Semantic Search, Re-ranker |
+| 추천 | `recsys-ex/` | MF, Two-Tower, NCF, DCN, PLE-MTL, Item2Vec, FT-Transformer, Offline RL |
+| 검색 | `search-ex/` | BM25, Semantic Search |
+| 인과추론 | `causal-ex/` | HydraNet, Meta-Learners (S/T/X-Learner) |
 | 안전 | `safety-ex/` | Toxicity Classifier, Reward Model, DPO |
-| 시계열 | `timeseries-ex/` | Anomaly Autoencoder, Forecasting |
-| 그래프 | `graph-ex/` | GCN, GAT |
+| 시계열 | `timeseries-ex/` | Anomaly Autoencoder, Forecasting, LSTM-FCN |
+| 그래프 | `graph-ex/` | GCN |
 | 음성 | `speech-ex/` | wav2vec2 |
-| 멀티모달 | `multimodal-ex/` | CLIP, Image Captioning |
+| 멀티모달 | `multimodal-ex/` | CLIP |
 
 ## 설치
 

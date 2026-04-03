@@ -8,3 +8,4 @@
 |---|------|----------|----------|
 | 1 | Anomaly Autoencoder | [anomaly-autoencoder](anomaly-autoencoder/) | reconstruction error, 임계값, FPR/Recall |
 | 2 | Forecasting | [forecasting](forecasting/) | LSTM, windowing, MAE/RMSE |
+| 3 | LSTM-FCN | [lstm-fcn](lstm-fcn/) | LSTM + CNN 병렬, 시계열 분류, GAP |
