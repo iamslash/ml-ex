@@ -1,0 +1,12 @@
+# Core (scratch-ex, pytorch-ex)
+numpy
+torch
+torchvision
+scikit-learn
+matplotlib
+
+# BERT, ViT fine-tuning
+transformers
+
+# wav2vec2
+torchaudio

@@ -1,6 +1,6 @@
 """
 RNN/LSTM with PyTorch.
-IMDB 유사 감성 분류 (합성 데이터).
+시퀀스 패턴 분류: 3가지 패턴의 토큰 시퀀스를 분류.
 """
 
 import torch
@@ -14,26 +14,48 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"device: {device}")
 
 # --- 합성 데이터 ---
-# 시퀀스 내 특정 패턴으로 긍정/부정 분류
-vocab_size = 50
+# 3가지 시퀀스 패턴: 상승(0), 하강(1), 진동(2)
+vocab_size = 30
 seq_len = 20
-n_samples = 2000
+n_per_class = 1000
 
-def make_data(n):
-    X = torch.randint(0, vocab_size, (n, seq_len))
-    # 규칙: 시퀀스 앞쪽에 높은 값(25-49)이 많으면 긍정(1)
-    first_half_mean = X[:, :seq_len//2].float().mean(dim=1)
-    y = (first_half_mean > vocab_size / 2).long()
-    return X, y
+def make_data(n_per_class):
+    X, y = [], []
+    for _ in range(n_per_class):
+        # Class 0: 상승 패턴 (작은 값 → 큰 값)
+        seq = torch.sort(torch.randint(0, vocab_size, (seq_len,)))[0]
+        seq += torch.randint(0, 3, (seq_len,))  # noise
+        X.append(seq.clamp(0, vocab_size - 1)); y.append(0)
 
-X_train, y_train = make_data(n_samples)
-X_test, y_test = make_data(500)
+        # Class 1: 하강 패턴 (큰 값 → 작은 값)
+        seq = torch.sort(torch.randint(0, vocab_size, (seq_len,)), descending=True)[0]
+        seq += torch.randint(0, 3, (seq_len,))
+        X.append(seq.clamp(0, vocab_size - 1)); y.append(1)
+
+        # Class 2: 진동 패턴 (high-low 반복)
+        seq = torch.zeros(seq_len, dtype=torch.long)
+        for i in range(seq_len):
+            if i % 2 == 0:
+                seq[i] = torch.randint(20, vocab_size, (1,))
+            else:
+                seq[i] = torch.randint(0, 10, (1,))
+        X.append(seq); y.append(2)
+
+    X = torch.stack(X)
+    y = torch.tensor(y)
+    perm = torch.randperm(len(y))
+    return X[perm], y[perm]
+
+X_all, y_all = make_data(n_per_class)
+split = int(0.8 * len(X_all))
+X_train, X_test = X_all[:split], X_all[split:]
+y_train, y_test = y_all[:split], y_all[split:]
 
 train_loader = DataLoader(TensorDataset(X_train, y_train), batch_size=64, shuffle=True)
 test_loader = DataLoader(TensorDataset(X_test, y_test), batch_size=256)
 
 print(f"train: {len(X_train)}, test: {len(X_test)}")
-print(f"vocab: {vocab_size}, seq_len: {seq_len}")
+print(f"vocab: {vocab_size}, seq_len: {seq_len}, classes: 3")
 
 # --- 모델 ---
 class LSTMClassifier(nn.Module):
@@ -44,21 +66,19 @@ class LSTMClassifier(nn.Module):
         self.fc = nn.Linear(hidden_dim, n_classes)
 
     def forward(self, x):
-        # x: (batch, seq_len)
-        x = self.embedding(x)            # (batch, seq_len, embed_dim)
-        output, (h_n, c_n) = self.lstm(x)  # h_n: (1, batch, hidden_dim)
-        h_last = h_n.squeeze(0)           # (batch, hidden_dim)
-        logits = self.fc(h_last)          # (batch, n_classes)
-        return logits
+        x = self.embedding(x)
+        output, (h_n, c_n) = self.lstm(x)
+        h_last = h_n.squeeze(0)
+        return self.fc(h_last)
 
-model = LSTMClassifier(vocab_size, embed_dim=16, hidden_dim=32, n_classes=2).to(device)
+model = LSTMClassifier(vocab_size, embed_dim=16, hidden_dim=32, n_classes=3).to(device)
 print(f"\n{model}")
 print(f"params: {sum(p.numel() for p in model.parameters()):,}")
 
 # --- 학습 ---
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-num_epochs = 10
+num_epochs = 15
 
 for epoch in range(num_epochs):
     model.train()
@@ -81,7 +101,6 @@ for epoch in range(num_epochs):
 
     train_acc = correct / total * 100
 
-    # 테스트
     model.eval()
     test_correct = 0
     test_total = 0
@@ -96,4 +115,12 @@ for epoch in range(num_epochs):
     avg_loss = total_loss / len(train_loader)
     print(f"epoch {epoch+1:2d}/{num_epochs} | loss {avg_loss:.4f} | train {train_acc:.1f}% | test {test_acc:.1f}%")
 
-print(f"\nfinal test accuracy: {test_acc:.1f}%")
+# --- 클래스별 정확도 ---
+print("\n--- per-class accuracy ---")
+model.eval()
+with torch.no_grad():
+    preds = model(X_test.to(device)).argmax(1).cpu()
+    for c, name in enumerate(["ascending", "descending", "oscillating"]):
+        mask = y_test == c
+        acc = (preds[mask] == c).float().mean().item() * 100
+        print(f"  {name}: {acc:.1f}%")
