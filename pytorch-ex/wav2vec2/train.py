@@ -97,7 +97,7 @@ def main():
         num_train_epochs=args.num_epochs,
         per_device_train_batch_size=32,
         logging_dir="./.logs",
-        evaluation_strategy='epoch',
+        eval_strategy='epoch',
         save_strategy='epoch',
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",

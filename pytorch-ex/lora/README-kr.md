@@ -29,9 +29,9 @@ fine-tuning 시 가중치 변화량 ΔW는 보통 low-rank 구조를 가진다.
 
 ### 파라미터 효율성
 
-| | Full Fine-tuning | LoRA (rank=4) |
+| | Full Fine-tuning | LoRA (rank=2) |
 |---|---|---|
-| 학습 파라미터 | 전체 | ~5-10% |
+| 학습 파라미터 | 전체 | ~12% (이 데모), 실제 LLM에서 1-5% |
 | 메모리 | 전체 그래디언트 | 작은 행렬만 |
 | 모델 저장 | 전체 복사본 | 작은 adapter만 |
 | 태스크 전환 | 별도 모델 | adapter 교체 |

@@ -55,6 +55,22 @@ class SpeechCommandsDataset(Dataset):
             os.system(f'tar -xzf {filepath} -C {root_dir}')
             os.remove(filepath)
         if subset == 'train':
+            # training_list.txt가 없으므로, validation/testing에 포함되지 않은 파일을 사용
+            val_test_files = set()
+            for list_file in ['validation_list.txt', 'testing_list.txt']:
+                list_path = os.path.join(root_dir, list_file)
+                if os.path.exists(list_path):
+                    with open(list_path) as f:
+                        val_test_files.update(line.strip() for line in f)
+            for cls in self.classes:
+                cls_dir = os.path.join(audio_dir, cls)
+                if os.path.isdir(cls_dir):
+                    for fname in os.listdir(cls_dir):
+                        if fname.endswith('.wav'):
+                            rel_path = f"{cls}/{fname}"
+                            if rel_path not in val_test_files:
+                                self.audio_files.append((os.path.join(audio_dir, rel_path), self.class_to_index[cls]))
+        elif subset == 'unused_old_train':
             with open(os.path.join(root_dir, 'validation_list.txt')) as f:
                 lines = f.readlines()
                 for line in lines:

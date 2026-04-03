@@ -1,16 +1,16 @@
 import argparse
 import torch
-import torchaudio
-from torchaudio.models import Wav2Vec2Model
 
 from train import AudioClassifier
-from transformers import Wav2Vec2Processor
+from transformers import Wav2Vec2Model, Wav2Vec2Processor, Wav2Vec2Config
 from data import load_audio
 
 
 def load_model(model_path, num_classes):
     model_name = "facebook/wav2vec2-base-960h"
-    wav2vec2_model = Wav2Vec2Model.from_pretrained(model_name)
+    config = Wav2Vec2Config.from_pretrained(model_name)
+    config.architectures = ["Wav2Vec2Model"]
+    wav2vec2_model = Wav2Vec2Model.from_pretrained(model_name, config=config)
     model = AudioClassifier(wav2vec2_model, num_classes=num_classes)
     model.load_state_dict(torch.load(model_path))
     model.eval()

@@ -45,11 +45,12 @@ class MLP(nn.Module):
 # --- 데이터 생성 ---
 # 사전학습 데이터: y = sin(x)
 n = 500
-X_pretrain = torch.randn(n, 4)
+in_dim = 32
+X_pretrain = torch.randn(n, in_dim)
 y_pretrain = torch.sin(X_pretrain).sum(dim=1, keepdim=True)
 
 # Fine-tune 데이터: y = cos(x) (다른 태스크)
-X_finetune = torch.randn(200, 4)
+X_finetune = torch.randn(200, in_dim)
 y_finetune = torch.cos(X_finetune).sum(dim=1, keepdim=True)
 
 pretrain_loader = DataLoader(TensorDataset(X_pretrain, y_pretrain), batch_size=64, shuffle=True)
@@ -57,7 +58,7 @@ finetune_loader = DataLoader(TensorDataset(X_finetune, y_finetune), batch_size=6
 
 # --- Step 1: 사전학습 ---
 print("=== Step 1: Pretrain ===")
-model = MLP(4, 64, 1)
+model = MLP(in_dim, 256, 1)
 total_params = sum(p.numel() for p in model.parameters())
 print(f"total params: {total_params}")
 
@@ -79,7 +80,7 @@ for epoch in range(50):
 
 # --- Step 2: LoRA 적용 ---
 print("\n=== Step 2: Apply LoRA ===")
-rank = 4
+rank = 2
 
 # 기존 Linear를 LoRA Linear로 교체
 model.fc1 = LoRALinear(model.fc1, rank=rank)
@@ -97,18 +98,18 @@ print("\n=== Step 3: LoRA Fine-tune ===")
 lora_params = [p for p in model.parameters() if p.requires_grad]
 optimizer = optim.Adam(lora_params, lr=0.01)
 
-for epoch in range(50):
+for epoch in range(200):
     for X_batch, y_batch in finetune_loader:
         optimizer.zero_grad()
         loss = criterion(model(X_batch), y_batch)
         loss.backward()
         optimizer.step()
 
-    if (epoch + 1) % 10 == 0:
+    if (epoch + 1) % 40 == 0:
         with torch.no_grad():
             pred = model(X_finetune)
             loss = criterion(pred, y_finetune)
-        print(f"  epoch {epoch+1:2d} | finetune loss {loss:.4f}")
+        print(f"  epoch {epoch+1:3d} | finetune loss {loss:.4f}")
 
 # --- 비교 ---
 print("\n=== Comparison ===")
