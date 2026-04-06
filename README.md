@@ -81,7 +81,7 @@ ml-ex/
 | 안전 | `safety-ex/` | Toxicity Classifier, Reward Model, DPO |
 | 시계열 | `timeseries-ex/` | Anomaly Autoencoder, Forecasting, LSTM-FCN |
 | 그래프 | `graph-ex/` | GCN, GAT |
-| 음성 | `speech-ex/` | wav2vec2 (참고 예제, GPU 필요) |
+| 음성 | `speech-ex/` | Audio Classifier, wav2vec2 (참고 예제) |
 | 멀티모달 | `multimodal-ex/` | CLIP, Image Captioning |
 
 ## 설치

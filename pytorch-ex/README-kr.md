@@ -12,7 +12,7 @@
 | 4 | BERT Fine-tuning | [bert-finetune](bert-finetune/) | 사전학습 모델 활용, 감성 분류 |
 | 5 | ViT | [vit](vit/) | 이미지 패치 → 트랜스포머 |
 | 6 | Autoencoder | [autoencoder](autoencoder/) | 인코더-디코더, 잠재 공간 |
-| 8 | VAE | [vae](vae/) | 확률적 잠재 공간, reparameterization |
-| 9 | Diffusion | [diffusion](diffusion/) | 노이즈 추가/제거, denoising |
-| 10 | DQN | [dqn](dqn/) | 신경망 + Q-Learning |
-| 11 | LoRA | [lora](lora/) | 파라미터 효율적 fine-tuning |
+| 7 | VAE | [vae](vae/) | 확률적 잠재 공간, reparameterization |
+| 8 | Diffusion | [diffusion](diffusion/) | 노이즈 추가/제거, denoising |
+| 9 | DQN | [dqn](dqn/) | 신경망 + Q-Learning |
+| 10 | LoRA | [lora](lora/) | 파라미터 효율적 fine-tuning |
