@@ -16,6 +16,7 @@ ml-ex/
 ├── graph-ex/         그래프 신경망
 ├── speech-ex/        음성
 ├── multimodal-ex/    멀티모달
+├── agent-ex/         LLM 에이전트 패턴
 └── triton-ex/        Triton
 ```
 
@@ -83,6 +84,7 @@ ml-ex/
 | 그래프 | `graph-ex/` | GCN, GAT |
 | 음성 | `speech-ex/` | Audio Classifier, wav2vec2 (참고 예제) |
 | 멀티모달 | `multimodal-ex/` | CLIP, Image Captioning |
+| 에이전트 | `agent-ex/` | Memory Schema, Reflexion, Memory Retrieval, Governance, Generation-Reflection, Iterative Refinement, LLM-TDD, Skill Library, Self-Correcting Agent |
 
 ## 설치
 
