@@ -319,7 +319,7 @@ def demo_conflict_detection(store: GovernedMemoryStore):
                         ttl_seconds=3600, importance=1.0)
     print(f"  Conflict warnings: {result['conflict_warnings']}")
 
-    store.save("lesson_cache", "Use caching for expensive DB queries",
+    store.save("lesson_cache", "Always use cache for expensive DB queries",
                ttl_seconds=3600, importance=1.0)
     print()
     result2 = store.save("lesson_no_cache",
@@ -340,7 +340,7 @@ def demo_safety_gate(store: GovernedMemoryStore):
 
 if __name__ == "__main__":
     print("Memory Governance Demo")
-    print("stdlib + numpy only (no external LLM calls)")
+    print("stdlib only (no external dependencies or LLM calls)")
 
     store = GovernedMemoryStore()
 

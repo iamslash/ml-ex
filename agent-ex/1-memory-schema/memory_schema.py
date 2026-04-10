@@ -9,7 +9,7 @@ Implements the JSON schema from agent memory research:
 import json
 import sqlite3
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 
@@ -36,7 +36,7 @@ def make_memory(
     """Construct a memory record conforming to the agent memory schema."""
     return {
         "id": str(uuid.uuid4()),
-        "timestamp": timestamp or datetime.utcnow().isoformat(),
+        "timestamp": timestamp or datetime.now(timezone.utc).isoformat(),
         "task_signature": {
             "domain": domain,
             "env": env,
@@ -134,7 +134,7 @@ class MemoryStore:
 
     def delete_old(self, days: int) -> int:
         """Delete memories older than `days` days. Returns count deleted."""
-        cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
         cur = self._conn.execute(
             "DELETE FROM memories WHERE timestamp < ?", (cutoff,)
         )
@@ -174,7 +174,7 @@ def print_memory(mem: dict, index: int) -> None:
 
 def main():
     # ---- Build 5 sample memories (mix of success / failure) ---------------
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
 
     samples = [
         make_memory(

@@ -9,7 +9,7 @@ cd agent-ex/3-memory-retrieval
 python memory_retrieval.py
 ```
 
-의존성: Python 표준 라이브러리 + numpy
+의존성: Python 표준 라이브러리만 (numpy 불필요)
 
 ## 핵심 개념
 
@@ -34,7 +34,7 @@ score = α·recency + β·importance + γ·relevance
 외부 모델 없이 **Bag-of-Words** 벡터를 사용한다.
 
 ```python
-def embed(text: str) -> np.ndarray:
+def embed(text: str) -> list[float]:
     # 전체 텍스트로 구성된 고정 어휘에서 단어 빈도 벡터 생성
 ```
 
