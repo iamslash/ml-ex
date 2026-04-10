@@ -15,7 +15,7 @@ from __future__ import annotations
 import fnmatch
 import os
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Callable, Optional
 
 
@@ -89,7 +89,7 @@ class ToolRegistry:
     # ------------------------------------------------------------------
 
     def execute(self, tool_name: str, args: dict) -> Any:
-        ts = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+        ts = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
         if tool_name not in self._tools:
             entry = AuditEntry(ts, tool_name, args, "blocked", "Tool not registered")
