@@ -17,6 +17,7 @@ ml-ex/
 ├── speech-ex/        음성
 ├── multimodal-ex/    멀티모달
 ├── agent-ex/         LLM 에이전트 패턴
+├── harness-ex/       하네스 엔지니어링
 └── triton-ex/        Triton
 ```
 
@@ -85,6 +86,7 @@ ml-ex/
 | 음성 | `speech-ex/` | Audio Classifier, wav2vec2 (참고 예제) |
 | 멀티모달 | `multimodal-ex/` | CLIP, Image Captioning |
 | 에이전트 | `agent-ex/` | Memory Schema, Reflexion, Memory Retrieval, Governance, Generation-Reflection, Iterative Refinement, LLM-TDD, Skill Library, Self-Correcting Agent |
+| 하네스 | `harness-ex/` | Prompt Template, I/O Guardrails, Tool Sandbox, Runtime Controller, Human-in-the-Loop |
 
 ## 설치
 
