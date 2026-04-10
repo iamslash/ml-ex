@@ -1,8 +1,14 @@
 """
-Self-Correcting Agent (Capstone): integrates memory, retrieval, governance,
-and skill library patterns from modules 1-8.
+Self-Correcting Agent (Capstone): integrates memory schema (module 1),
+3-axis retrieval (module 3), memory governance (module 4), and skill
+library (module 8) patterns.
 
-All LLM responses are simulated. No external API calls. stdlib + numpy only.
+Modules 2 (reflexion), 5 (generation-reflection), 6 (iterative-refinement),
+and 7 (LLM-TDD) are standalone learning exercises best studied separately.
+This capstone focuses on the memory + retrieval + governance + skill reuse
+pipeline that ties the agent's long-term learning loop together.
+
+All LLM responses are simulated. No external API calls. stdlib only.
 """
 
 import sqlite3

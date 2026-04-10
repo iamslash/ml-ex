@@ -37,9 +37,9 @@ python iterative_refinement.py
 ### 수렴 흐름
 
 ```
-Turn 1: 기본 구현 (3/10)
+Turn 1: 기본 구현 (0/10)
   ↓ 피드백: 에러 처리 없음
-Turn 2: try/except 추가 (5/10)
+Turn 2: try/except 추가 (2/10)
   ↓ 피드백: 타입 힌트·문서 없음
 Turn 3: 타입 힌트 + docstring (7/10)
   ↓ 피드백: csv 모듈, Path, 엣지 케이스 필요

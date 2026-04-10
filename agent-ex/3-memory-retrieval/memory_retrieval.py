@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-import numpy as np
+# stdlib-only: no numpy required
 
 # ---------------------------------------------------------------------------
 # Vocabulary & embedding
@@ -37,9 +37,9 @@ def build_vocab(texts: list[str]) -> None:
     _WORD2IDX = {w: i for i, w in enumerate(_VOCAB)}
 
 
-def embed(text: str) -> np.ndarray:
+def embed(text: str) -> list[float]:
     """Bag-of-words embedding; returns a float32 vector of vocab length."""
-    vec = np.zeros(len(_VOCAB), dtype=np.float32)
+    vec = [0.0] * len(_VOCAB)
     for word in _tokenize(text):
         idx = _WORD2IDX.get(word)
         if idx is not None:
@@ -56,10 +56,10 @@ class MemoryEntry:
     text: str
     timestamp: datetime
     importance_score: float          # raw 1-10
-    embedding: np.ndarray = field(default_factory=lambda: np.array([]))
+    embedding: list[float] = field(default_factory=list)
 
     def __post_init__(self):
-        if self.embedding.size == 0 and _VOCAB:
+        if not self.embedding and _VOCAB:
             self.embedding = embed(self.text)
 
 
@@ -80,13 +80,14 @@ def importance_score(entry: MemoryEntry) -> float:
     return (entry.importance_score - 1.0) / 9.0
 
 
-def relevance_score(query_embedding: np.ndarray, entry_embedding: np.ndarray) -> float:
+def relevance_score(query_embedding: list[float], entry_embedding: list[float]) -> float:
     """Cosine similarity in [0, 1]; returns 0 for zero vectors."""
-    qn = np.linalg.norm(query_embedding)
-    en = np.linalg.norm(entry_embedding)
+    dot = sum(a * b for a, b in zip(query_embedding, entry_embedding))
+    qn = math.sqrt(sum(a * a for a in query_embedding))
+    en = math.sqrt(sum(b * b for b in entry_embedding))
     if qn < 1e-9 or en < 1e-9:
         return 0.0
-    return float(np.dot(query_embedding, entry_embedding) / (qn * en))
+    return dot / (qn * en)
 
 
 # ---------------------------------------------------------------------------
@@ -101,7 +102,7 @@ class MemoryRetriever:
 
     def add_memory(self, entry: MemoryEntry) -> None:
         # Re-embed with current vocab if embedding is stale / empty
-        if entry.embedding.size != len(_VOCAB):
+        if len(entry.embedding) != len(_VOCAB):
             entry.embedding = embed(entry.text)
         self._memories.append(entry)
 
